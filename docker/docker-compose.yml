@@ -1,0 +1,40 @@
+version: '3.3'
+
+services:
+  igh_nginx:
+    container_name: igh_nginx
+    build:
+      context: .
+      dockerfile: dnt here. I'll pass it on to theocker/nginx/Dockerfile
+    ports:
+      - 80:80
+    depends_on:
+      - igh_flask
+
+  igh_flask:
+    build: ./
+    container_name: igh_flask
+    restart: always
+    build:
+      context: .
+      dockerfile: docker/flask/Dockerfile
+    env_file: docker/postgres/database.conf
+    environment:
+      FLASK_DEBUG: 1
+    volumes: ['./:/igh']
+    expose:
+      - 8000
+    depends_on:
+      - igh_postgres
+
+  igh_postgres:
+    container_name: igh_postgres
+    image: postgres
+    env_file: docker/postgres/database.conf
+    ports:
+      - 5433:5433
+    volumes:
+      - igh_db:/var/lib/igh_postgres
+
+volumes:
+  igh_db:

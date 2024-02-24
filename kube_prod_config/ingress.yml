@@ -1,0 +1,16 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: farmcloud-ingress
+spec:
+  rules:
+  - host: farmcloud.techspawn.top
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: farmcloud-service
+            port:
+              number: 80
